@@ -13,11 +13,24 @@
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
-
+//create a holder variable for our solution
+// 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = {}; //fixme
+  var board = new Board({'n': n});
+  var rook = 1;
+  // var rooksBoard = this.rows();
+  board.togglePiece(n - n, n - n);
+  solution[n - n] = n - n;
+  delete board.attributes[n - n]; // deleted row
+  
+  // put a piece in the first row and column
+  // keep track of position --> store in solution
+  // delete the row where the piece was placed --> do this by deleting the property from solution
 
+  
+  
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
