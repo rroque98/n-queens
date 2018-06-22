@@ -135,7 +135,7 @@
     hasAnyColConflicts: function() {
       // return false; // fixme
 
-      console.table(this.rows());
+      //console.table(this.rows());
       for (var key in this.attributes) {
         for (var i = 0; i < this.attributes[key].length; i++) {
           if (Array.isArray(this.attributes[key]) && this.hasColConflictAt.call(this, i) === true) {

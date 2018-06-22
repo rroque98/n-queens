@@ -19,29 +19,94 @@
 window.findNRooksSolution = function(n) {
 
 // togglePiece: function(rowIndex, colIndex)
-
   // create a var to store solution
-  var solution;
+  var result;
   // create our board with size defined by n
   var board = new Board( { 'n' : n } );
-  
 
-function test() {
-  for (var rowIndex = 0; rowIndex < board.rows().length; rowIndex++) {
-    for (var colIndex = 0; colIndex < board.rows()[rowIndex].length; colIndex++) {
-        board.togglePiece([rowIndex], [colIndex])
-      if(board.hasRowConflictAt([rowIndex]) || board.hasColConflictAt([colIndex])) {
-        board.togglePiece([rowIndex], [colIndex]);
+  //create a counter var to keep track of the callstack
+  var counter = 1;
+  var erase = false;
+  //create helper recursive function
+  function solution() {
+   //hF will iterate over the entire board
+   for (let row = 0; row < board.rows().length; row++) {
+     for (let col = 0; col < board.rows().length; col++) {
+      if (board.rows()[row][col] === 1) {
+        continue; 
+      }
+      board.togglePiece(row, col); 
+       //toggle the previous added Rooke no matter what
+      if (erase) {
+        board.togglePiece(piece[0], piece[1]);
+      }
+      var piece = [row, col];
+       
+      if (counter !== n) {
+        counter++;
+        erase = false;
+        result = solution();
+        if(result) {
+          return result;
+        }
       } 
+       
+      if (counter === n && !board.hasAnyRooksConflicts()) {
+        result = board.rows();
+        return result;
+      }
+       
+      erase = true;
+      
+     }
+ 
+     //it will place a Rook in the current row, col
+      //and take away the old Rook
+    //if counter ==== input stop
+      //do a recursive call
+   
+     }
+   
+   counter--;       
+   board.togglePiece(piece[0], piece[1]);
 
-    }
   }
-}
 
-test();
+  solution();
+  return result;
+
+
   
-  // Track: colIndexOfCurrentPiece, rowOfCurrentPiece, 
-  var recuse = function (colIndexOfCurrentPiece, rowOfCurrentPiece) {
+  // var traverse = function(row, n) {
+    
+  //   if (row === n) {
+  //     return solution;
+  //   }
+    
+    
+  //   //   board.togglePiece([rowIndex], [colIndex]
+  //   //   if(board.hasRowConflictAt([rowIndex]) || board.hasColConflictAt([colIndex])) {
+  //   //     board.togglePiece([rowIndex], [colIndex]);)
+  //   //   }
+    
+  //   // for (var i =0)
+  // }
+
+  // traverse();
+
+  // for (var rowIndex = 0; rowIndex < board.rows().length; rowIndex++) {
+  //   for (var colIndex = 0; colIndex < board.rows()[rowIndex].length; colIndex++) {
+
+  //       board.togglePiece([rowIndex], [colIndex])
+
+  //     if(board.hasRowConflictAt([rowIndex]) || board.hasColConflictAt([colIndex])) {
+       
+  //       board.togglePiece([rowIndex], [colIndex]);
+
+  //     } 
+
+  //   }
+  // }
 
   // Start iterating at the last place of the first row
     // check if that rook has a conflict with col or row
@@ -61,25 +126,27 @@ test();
   //Take the next rook on the loop (decending)
    //Start the same process applied to previous rook
     //Repeat the process until loops ends (first element on the array)
-  };
  
-  // return the solution
-  solution = board.rows();
-
-  if(board.hasAnyRowConflicts()) {
-    return undefined;
-  } else {
-    return solution;
-  }
   
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(result));
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0; //fixme
+  
+  var board = new Board( { 'n' : n } );
+  for (var i = 0; i < n; i++) {
+    if(findNRooksSolution(n)) {
+      console.log('checked')
+      solutionCount++;
+    }
+    
+  }
+  
+  
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  //console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
 
